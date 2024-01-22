@@ -7,7 +7,7 @@
   Retour : int
   
   Renvoie le plus grand élément parmi les 3 paramètres
-*/
+
 int xMax(int X1, int X2, int X3) {
     // Première valeur considéré comme le maximum
     int max = X1;
@@ -37,3 +37,4 @@ void setup() {
     // Fenêtre en vert quand la réponse est trouvé :
     background(0, 255, 0);
 }
+*/
