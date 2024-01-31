@@ -33,7 +33,7 @@ void displayWeather() {
   textSize(20);                                                       // Taille du texte à 20 px 
   text("Actuellement : " + weatherDescription, 40, 80);               // Description de la météo à la position x=40, y=80
   image(icon, 300, 50);                                               // Affichage de la bonne icône à la postion x=300, y=50
-  text("Température : " + temperature + " °C", 40, 140);              // Affichage de la température à la position x=40, y=140
+  text("Température : " + nf(temperature, 0, 1) + " °C", 40, 140);    // Affichage de la température à la position x=40, y=140 / nf() permet un meilleur affichage des nombres décimaux
   text("Pression : " + pressure + " mbar", 40, 190);                  // Affichage de la pression à la position x=40, y=190
 }
 
