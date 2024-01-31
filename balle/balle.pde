@@ -15,6 +15,8 @@ float bounceStrength;         // Stocke la force du rebond
 float ballSize;               // Stocke la taille de la balle
 boolean isMoving = true;      // Stocke l'état de déplacement de la balle
 boolean isFalling = true;     // Stocke le sens de déplacement de la balle
+float mouseXOnPress, mouseYOnPress;
+boolean dragging = false;     // Stocke l'état de la souris
 // création des variable pour les images :
 PImage balle;
 PImage bois;
@@ -29,6 +31,10 @@ void setup(){
   ballon = loadImage("ballon.png");
   // Initialisation du choix de balle :
   choice = 1;
+  // Initialise la position initiale de la balle sur l'axe X
+  initBallX = width/3;
+  // Mise à jour de la position intiale de la balle
+  ballX = initBallX;
   // Taille de la balle en fonction de la taille de la fenêtre (40%)
   ballSize = width * 0.4;
   // Initialise la position initiale de la balle (20% sous la barre supérieure) :
@@ -47,6 +53,7 @@ void draw(){
   textSize(20);   // Taille du texte
   textAlign(CENTER);      // Alignement du texte
   text("Appuyez sur les touches 1, 2 ou 3 pour choisir la balle", width/2, 30);      // Texte et position x=largeur/2, y=30
+  text("Maintenez le clique sur la balle afin de la déplacer n'importe où sur l'écran", width/2, 50);
   // La balle arrive au sommet de son rebond ....
   if(speed <= 1){ // ... Si la vitesse devient nulle,
     isFalling = true; // Alors la balle tombe à nouveau
@@ -101,9 +108,9 @@ void draw(){
 
   // Dessine l'image de la balle, en fonction du choix de l'utilisateur pour avoir la bonne balle
   switch(choice){
-    case 1: image(bois, width/3, ballY, ballSize, ballSize); break;
-    case 2: image(ballon, width/3, ballY, ballSize, ballSize); break;
-    case 3: image(balle, width/3, ballY, ballSize, ballSize); break;
+    case 1: image(bois, ballX, ballY, ballSize, ballSize); break;
+    case 2: image(ballon, ballX, ballY, ballSize, ballSize); break;
+    case 3: image(balle, ballX, ballY, ballSize, ballSize); break;
   }
 }
 
@@ -115,4 +122,28 @@ void keyPressed() {
     speed=1;
     ballY = initBallY;
   }
+}
+
+void mousePressed() {
+  // Vérifie si la souris est sur la balle lors du clic
+  if (dist(mouseX, mouseY, ballX + ballSize/2, ballY + ballSize/2) < ballSize/2) {
+    dragging = true;                // Active la fonctionnalité "drag and drop"
+    isMoving = false;                // La balle arrête de bouger quand l'utilisateur la bouge
+     // Calcule la différence pour maintenir la position relative de la souris par rapport à la balle
+    mouseXOnPress = mouseX - ballX; // Calcule la différence pour maintenir la position relative
+    mouseYOnPress = mouseY - ballY;
+  }
+}
+
+void mouseDragged() {
+  if (dragging) {
+    // Mettre à jour la position de la balle en fonction du déplacement de la souris
+    ballX = mouseX - mouseXOnPress;          // Maintient la position relative de la souris par rapport à la balle
+    ballY = mouseY - mouseYOnPress;
+  }
+}
+
+void mouseReleased() {
+  dragging = false;        // Désactive la fonctionnalité "drag and drop" lorsque le clic est relâché
+  isMoving = true;         // La balle se remet à bouger
 }
